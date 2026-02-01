@@ -1,0 +1,14 @@
+{
+  "WorkspaceID": "dv.ws.0c96995b-273b-4ef2-b0cd-57b5f2756d32",
+  "RepoID": "dv.repo.a28d181e-050f-450c-be39-502fb4fd0803",
+  "Path": "C:\\Users\\aloka\\Documents\\Unreal Projects\\Aura",
+  "AccountID": "alok.a11405_at_gmail.com",
+  "BranchID": "dv.branch.1",
+  "BranchName": "main",
+  "CommitID": "dv.commit.8",
+  "Paused": false,
+  "ShouldDownload": false,
+  "RepoName": "Aura",
+  "ReadOnly": false,
+  "DigestMethod": "sha1"
+}
