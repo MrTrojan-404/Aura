@@ -146,7 +146,15 @@ public:
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Mana);
 
 #pragma endregion Vital Attributes
+	
+#pragma region Meta Attributes
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
+	FGameplayAttributeData IncomingDamage;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, IncomingDamage);
 
+#pragma endregion Meta Attributes
+	
 #pragma region RepNotifies
 
 	// Vital Attributes
@@ -207,5 +215,5 @@ public:
 private:
 
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
-
+	void ShowFloatingText(const FEffectProperties& Props, float Damage) const;
 };
