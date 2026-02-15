@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "Aura.h"
 #include "AuraAbilitySystemComponent.h"
+#include "AuraGameplayTags.h"
 #include "GameplayEffectTypes.h"
 #include "Components/CapsuleComponent.h"
 
@@ -31,7 +32,17 @@ void AAuraCharacterBase::BeginPlay()
 	Super::BeginPlay();
 	
 }
- 
+
+
+bool AAuraCharacterBase::IsDead_Implementation() const
+{
+	return bDead;
+}
+
+AActor* AAuraCharacterBase::GetAvatar_Implementation()
+{
+	return this;
+}
 
 UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
 { 
@@ -62,6 +73,13 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation()
 	
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Dissolve();
+	bDead = true;
+}
+
+
+TArray<FTaggedMontage> AAuraCharacterBase::GetAttackMontages_Implementation()
+{
+	return AttackMontages;
 }
 
 void AAuraCharacterBase::Dissolve()
@@ -80,10 +98,22 @@ void AAuraCharacterBase::Dissolve()
 	}
 }
 
-FVector AAuraCharacterBase::GetCombatSocketLocation()
+FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag)
 {
-	check(Weapon);
-	return Weapon->GetSocketLocation(WeaponTipSocketName);
+	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_Weapon) && IsValid(Weapon))
+	{
+		return Weapon->GetSocketLocation(WeaponTipSocketName);
+	}
+	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_LeftHand))
+	{
+		return GetMesh()->GetSocketLocation(LeftHandSocketName);
+	}
+	if (MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_RightHand))
+	{
+		return GetMesh()->GetSocketLocation(RightHandSocketName);
+	}
+	return FVector();
 }
 
 void AAuraCharacterBase::InitAbilityActorInfo()
